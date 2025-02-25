@@ -7,7 +7,10 @@ const { v4: uuidv4 } = require('uuid');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use((req, res, next) => {
+  req.me = users[1];
+  next();
+});
 
 let users = {
     1: {
@@ -54,12 +57,25 @@ let users = {
     const message = {
       id,
       text: req.body.text,
+      userId: req.me.id,
     };
   
     messages[id] = message;
   
     return res.send(message);
   });
+
+  app.delete('/messages/:messageId', (req, res) => {
+    const {
+      [req.params.messageId]: message,
+      ...otherMessages
+    } = messages;
+  
+    messages = otherMessages;
+  
+    return res.send(message);
+  });
+  
   
 app.listen(process.env.LOCALPORT, () => {
   console.log(`My first Express app - listening on port ${process.env.LOCALPORT}!`);
