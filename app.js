@@ -75,7 +75,10 @@ let users = {
   
     return res.send(message);
   });
-  
+
+  app.get('/session', (req, res) => {
+    return res.send(users[req.me.id]);
+  });
   
 app.listen(process.env.LOCALPORT, () => {
   console.log(`My first Express app - listening on port ${process.env.LOCALPORT}!`);
