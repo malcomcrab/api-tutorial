@@ -2,6 +2,12 @@ const dotenv = require('dotenv/config');
 const express = require("express");
 const app = express();
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 let users = {
     1: {
@@ -41,6 +47,18 @@ let users = {
   
   app.get('/messages/:messageId', (req, res) => {
     return res.send(messages[req.params.messageId]);
+  });
+
+  app.post('/messages', (req, res) => {
+    const id =  uuidv4();
+    const message = {
+      id,
+      text: req.body.text,
+    };
+  
+    messages[id] = message;
+  
+    return res.send(message);
   });
   
 app.listen(process.env.LOCALPORT, () => {
