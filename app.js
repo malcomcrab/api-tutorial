@@ -34,6 +34,14 @@ let users = {
   app.get('/users/:userId', (req, res) => {
     return res.send(users[req.params.userId]);
   });
+
+  app.get('/messages', (req, res) => {
+    return res.send(Object.values(messages));
+  });
+  
+  app.get('/messages/:messageId', (req, res) => {
+    return res.send(messages[req.params.messageId]);
+  });
   
 app.listen(process.env.LOCALPORT, () => {
   console.log(`My first Express app - listening on port ${process.env.LOCALPORT}!`);
